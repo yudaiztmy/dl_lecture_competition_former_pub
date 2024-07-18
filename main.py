@@ -418,14 +418,8 @@ def main():
     model.eval()
     submission = []
     for image, question in test_loader:
-        image = image.to(device, non_blocking=True)
-        # Ensure question is a list
-        if not isinstance(question, list):
-            question = [question]  # Convert to a single-element list
-
-        # Pass the raw question string to the model
-        pred = model(image, question[0])  # Assuming question is a single-element list
-
+        image, question = image.to(device), question.to(device)
+        pred = model(image, question)
         pred = pred.argmax(1).cpu().item()
         submission.append(pred)
 
